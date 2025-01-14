@@ -1,6 +1,7 @@
 import Image, { type ImageProps } from "next/image";
 import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
+import { CreateUserSchema } from "@repo/common/types"
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -9,6 +10,13 @@ type Props = Omit<ImageProps, "src"> & {
 
 const ThemeImage = (props: Props) => {
   const { srcLight, srcDark, ...rest } = props;
+
+  function hi(){
+    const parsed = CreateUserSchema.safeParse({})
+    console.log(parsed.success,' parsed')
+    console.log('check 1')
+  }
+  hi()
 
   return (
     <>
