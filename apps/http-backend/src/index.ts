@@ -108,7 +108,44 @@ app.post('/room',middleware, async (req,res) => {
     }
 })
 
+// get chats
+app.get('/chats/:roomId',async (req,res)=>{
+    const roomId = Number(req.params.roomId)
+    try{
+        const messages = await prismaClient.chat.findMany(
+            {
+            where:{
+                roomId: roomId
+            },
+            orderBy: {
+                id: "desc"
+            },
+            take: 50
+        }
+    )
+        console.log(messages,' ----messages')
+        res.json({messages})
+    }catch(e){
+        res.status(500).json({message: "Something went wrong"})
+    }
+})
 
+// give a slug give me the roomId
+app.get('/room/:slug',async (req, res) => {
+    try{
+        const slug = req.params.slug
+        const roomData = await prismaClient.room.findFirst({
+            where: {
+                slug
+            }
+        })
+        console.log(roomData,' ------- roomdata')
+        res.status(200).json({roomId: roomData?.id})
+    }catch(e){
+        console.log(e)
+        res.status(500).json({message: "Something went wrong"})
+    }
+})
 
 app.listen(PORT, () => {
     console.log('http backend server started at '+PORT)
