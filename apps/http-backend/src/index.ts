@@ -7,7 +7,7 @@ import { prismaClient } from "@repo/db/client";
 import { CreateRoomSchema, CreateUserSchema, SigninSchema } from "@repo/common/types";
 
 const app = express()
-const PORT = 3001
+const PORT = 3002
 
 
 app.use(cors())
