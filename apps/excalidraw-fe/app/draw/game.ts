@@ -190,8 +190,8 @@ export class Game {
             shape = {
                 type: "circle",
                 radius: radius,
-                centerX: this.startX + radius,
-                centerY: this.startY + radius,
+                centerX: (this.startX)/this.zoom + radius - this.panOffsetX * this.zoom + this.scaledOffsetX/this.zoom,
+                centerY: (this.startY)/this.zoom + radius - this.panOffsetY * this.zoom + this.scaledOffsetY/this.zoom,
             }
         } else if (selectedTool === 'pencil') {
             if (this.pencilPathCoordinates.length === 1) {
