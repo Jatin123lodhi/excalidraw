@@ -167,7 +167,7 @@ export class Game {
         if (this.selectedTool === 'pencil') {
             this.ctx.beginPath()
             this.ctx.moveTo(e.clientX, e.clientY)
-            this.pencilPathCoordinates.push({ x: e.clientX, y: e.clientY })
+            this.pencilPathCoordinates.push({ x: e.clientX/this.zoom - this.panOffsetX * this.zoom + this.scaledOffsetX/this.zoom, y: e.clientY/this.zoom - this.panOffsetY * this.zoom + this.scaledOffsetY/this.zoom })
         }
     }
     mouseUpHandler = (e: MouseEvent) => {
@@ -245,7 +245,7 @@ export class Game {
                 this.ctx.closePath();
             } else if (selectedTool === 'pencil') {
                 this.ctx.lineTo(e.clientX, e.clientY)
-                this.pencilPathCoordinates.push({ x: e.clientX, y: e.clientY })
+                this.pencilPathCoordinates.push({ x: e.clientX/this.zoom - this.panOffsetX * this.zoom + this.scaledOffsetX/this.zoom, y: e.clientY/this.zoom - this.panOffsetY * this.zoom + this.scaledOffsetY/this.zoom })
                 this.ctx.stroke()
             }
         }
