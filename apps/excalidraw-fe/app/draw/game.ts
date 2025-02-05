@@ -180,8 +180,8 @@ export class Game {
         if (selectedTool === "rect") {
             shape = {
                 type: "rect",
-                x: this.startX,
-                y: this.startY,
+                x: this.startX/this.zoom - this.panOffsetX * this.zoom + this.scaledOffsetX/this.zoom,
+                y: this.startY/this.zoom - this.panOffsetY * this.zoom + this.scaledOffsetY/this.zoom,
                 height,
                 width
             }
