@@ -147,6 +147,20 @@ app.get('/room/:slug',async (req, res) => {
     }
 })
 
+app.delete(`/chats/:roomId`, async (req, res) => {
+    const roomId = req.params.roomId
+    try{
+        await prismaClient.chat.deleteMany({
+            where:{
+                roomId: Number(roomId)
+            }
+        })
+        res.status(200).json({message: "All shapes deleted"})
+    }catch(e){
+        res.json({message: "Something went wrong"})
+    }
+})
+
 app.listen(PORT, () => {
     console.log('http backend server started at '+PORT)
 })
