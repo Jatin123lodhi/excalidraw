@@ -34,7 +34,6 @@ export class Game {
     private panOffsetX: number;
     private panOffsetY: number;
     private isSpacePressed: boolean;
-    private isMouseDown: boolean;
     socket: WebSocket;
 
     constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
@@ -52,7 +51,6 @@ export class Game {
         this.panOffsetX = 0;
         this.panOffsetY = 0;
         this.isSpacePressed = false;
-        this.isMouseDown = false
         this.init();
         this.initHandlers();
         this.initEventListeners();
@@ -144,23 +142,23 @@ export class Game {
         this.ctx.restore();
     }
 
-    keyDown(e: KeyboardEvent) {
-        if (e.code === "Space" && !this.isMouseDown) {
+    keyDown = (e: KeyboardEvent) => {
+        console.log(this.isDrawing,' isDrawing keyDown', this)
+        if (!this.isDrawing && e.code === "Space") {
             this.isSpacePressed = true;
             this.canvas.style.cursor = 'grab';
         }
     }
 
-    keyUp(e: KeyboardEvent) {
+    keyUp = (e: KeyboardEvent) => {
         if (e.code === "Space") {
             this.isSpacePressed = false;
             this.canvas.style.cursor = 'default';
         }
     }
 
-    mouseDownHandler = (e: MouseEvent) => {
-        this.isMouseDown = true;
-        if(this.isSpacePressed) return;
+    mouseDownHandler = (e: MouseEvent) => {   
+        console.log('mouse down')     
         this.isDrawing = true
         this.startX = e.clientX
         this.startY = e.clientY
@@ -171,8 +169,7 @@ export class Game {
         }
     }
     mouseUpHandler = (e: MouseEvent) => {
-        this.isDrawing = false
-        if(this.isSpacePressed) return; 
+        this.isDrawing = false; 
         const width = (e.clientX - this.startX)/this.zoom;
         const height = (e.clientY - this.startY)/this.zoom;
         const selectedTool = this.selectedTool;
@@ -223,7 +220,6 @@ export class Game {
             roomId: this.roomId
         }))
         this.clearCanvas();
-        this.isDrawing = false;
     }
     mouseMoveHandler = (e: MouseEvent) => {
         if (this.isDrawing) {
@@ -250,7 +246,7 @@ export class Game {
             }
         }
 
-        if(this.isSpacePressed && this.isMouseDown){
+        if(this.isSpacePressed && !this.isDrawing){
             this.panOffsetX += e.movementX 
             this.panOffsetY += e.movementY 
             this.clearCanvas();
@@ -283,9 +279,9 @@ export class Game {
 
         this.canvas.addEventListener("wheel", this.mouseWheel)
 
-        document.addEventListener('keydown', this.keyDown.bind(this));
+        document.addEventListener('keydown', this.keyDown);
 
-        document.addEventListener('keyup', this.keyUp.bind(this));
+        document.addEventListener('keyup', this.keyUp);
 
     }
 }
